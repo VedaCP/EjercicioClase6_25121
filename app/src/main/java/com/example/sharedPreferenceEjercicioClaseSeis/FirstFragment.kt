@@ -30,37 +30,47 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tvValorEntero.text = sharedPreferences.getInt("Clave1",0).toString()
+        binding.etTextAlm.text = sharedPreferences.getString("Clave2","").toString()
+        binding.etNumberDecimal.text = sharedPreferences.getFloat("Clave3",0.0f).toString()
 
+        var numEntero = "Clave1"
+        var mTexto = "Clave2"
+        var numDec = "Clave3"
+        
+        binding.btGuardar.setOnClickListener{
 
+            var valor = binding.etNumberEntero.text.toString().toInt()
+            sharedPreferences.edit().putInt(numEntero, valor).apply()
+            var valor2 = sharedPreferences.getInt(numEntero, 0)
+                .toString().toInt()
+            binding.tvValorEntero.setText(getString(R.string.valor_entero_almacenado_1_d,
+               valor2))
 
-    }
+            var texto = binding.tvIngreseTexto.text.toString()
+            sharedPreferences.edit().putString(mTexto, texto).apply()
+            var texto2 = sharedPreferences.getString(mTexto, "")
+            binding.etTextAlm.setText(getString(R.string.texto_almacenado, texto2))
 
-    private fun Save() {
-        val mUserKey = ""
-        var mUserRead = sharedPreferences.getString(mUserKey, "")
-        if (mUserRead != null) {
-            Log.d("TAG", mUserRead)
+            var decimal: Float
+            decimal = binding.tvIngreseDecimal.text.toString().toFloat()
+            sharedPreferences.edit().putFloat(numDec, decimal).apply()
+            var decimal2 = sharedPreferences.getFloat(numDec, 0.0f)
+                .toString().toFloat()
+            binding.etNumberDecimal.setText(getString(R.string.decimal_almacenado,
+                decimal2.toString()))
+        }
+        binding.btBorrar.setOnClickListener{
+            sharedPreferences.edit().remove(numEntero).apply()
+            sharedPreferences.edit().remove(mTexto).apply()
+            sharedPreferences.edit().remove(numDec).apply()
+            binding.etTextAlm.setText("")
+            binding.etNumberEntero.setText("")
+            binding.etNumberDecimal.setText("")
+            binding.tvValorEntero.setText("")
+            binding.tvIngreseTexto.setText("")
+            binding.tvIngreseDecimal.setText("")
         }
 
-/*
-//obtener un int
-        mSharedPreferences.getInt("TestInt", -1)
-
-//obtener un String
-        mSharedPreferences.getString("TestString", "NotFound")
-
-
-
-//obtener un boolean
-        mSharedPreferences.getBoolean("TestBoolean", false)
-
-//obtener un long
-        mSharedPreferences.getLong("TestLong", -1L)
-//obtener un Float
-        mSharedPreferences.getFloat("TestFloat", -1.0f)
-
-//obtener un Set<String>
-        mSharedPreferences.getStringSet("TestStringSet", setOf())
-    */
     }
 }
